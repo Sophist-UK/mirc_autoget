@@ -46,6 +46,9 @@ begin
   fMain.Show;
 end;
 
+exports LoadDll,
+  UnloadDll,
+  Show;
 {$R *.res}
 
 begin
