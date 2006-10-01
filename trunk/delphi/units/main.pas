@@ -3,11 +3,13 @@ unit main;
 interface
 
 uses
-  Windows,SysUtils,  Classes,  Controls, Forms;
+  Windows,SysUtils,  Classes,  Controls, Forms, JvExControls, JvComponent,
+  JvOutlookBar;
 
 
 type
   TfMain = class(TForm)
+    barMain: TJvOutlookBar;
   private
     { Private declarations }
   public
