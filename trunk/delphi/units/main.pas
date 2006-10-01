@@ -4,7 +4,7 @@ interface
 
 uses
   Windows,SysUtils,  Classes,  Controls, Forms, JvExControls, JvComponent,
-  JvOutlookBar;
+  JvOutlookBar, tipitunes;
 
 
 type
