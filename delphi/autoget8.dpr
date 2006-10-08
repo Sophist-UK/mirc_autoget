@@ -4,10 +4,11 @@ uses
   SysUtils,
   Classes,
   mIRCManager in 'support\mIRCManager.pas',
-  main in 'units\main.pas' {fMain};
+  main in 'units\main.pas' {fMain},
+  windows,
+  miscutils in 'support\miscutils.pas';
 
-var
-  mIRC: tMircManager;
+
 
 procedure LoadDll(LoadInfo: PLoadInfo); stdcall; export;
 begin
@@ -22,7 +23,7 @@ begin
   begin
     result := 1;
     try
-      if fMain <> nil then freeandnil(fMain);
+      if fMain <> nil then fMain.Release;
       mirc.Free;
     except
     end;
@@ -39,7 +40,7 @@ function Show(mWnd, aWnd: HWND; data, parms: PChar; show, nopause: boolean):
   integer; stdcall;
 begin
   result := 1;
-  if fMain = nil then
+  if not assigned(fMain) then
     fMain := tfMain.Create(nil);
 //TODO: Re-implement application-level exception handler
   //  application.OnException := main.MainForm.AppException;
@@ -49,6 +50,7 @@ end;
 exports LoadDll,
   UnloadDll,
   Show;
+  
 {$R *.res}
 
 begin
