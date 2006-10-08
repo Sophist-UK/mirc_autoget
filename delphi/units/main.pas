@@ -4,13 +4,23 @@ interface
 
 uses
   Windows, SysUtils, Classes, Controls, Forms, JvExControls, JvComponent,
-  JvOutlookBar, ComCtrls, JvExComCtrls, JvStatusBar, miscutils, mircmanager;
+  ComCtrls, JvExComCtrls, JvStatusBar, miscutils, mircmanager,
+  ImgList, JvLookOut;
 
 type
   TfMain = class(TForm)
-    barMain: TJvOutlookBar;
     StatusBar: TJvStatusBar;
     MainPage: TPageControl;
+    imlButtons: TImageList;
+    barMain: TJvLookOut;
+    pageQueues: TJvLookOutPage;
+    pageLists: TJvLookOutPage;
+    pageTools: TJvLookOutPage;
+    btTransfers: TJvLookOutButton;
+    btQueues: TJvLookOutButton;
+    btFinished: TJvLookOutButton;
+    btQueOptions: TJvLookOutButton;
+    pageOptions: TJvLookOutPage;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
