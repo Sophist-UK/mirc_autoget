@@ -11,7 +11,7 @@ type
   TfMain = class(TForm)
     barMain: TJvOutlookBar;
   private
-    { Private declarations }
+  
   public
     { Public declarations }
   end;
