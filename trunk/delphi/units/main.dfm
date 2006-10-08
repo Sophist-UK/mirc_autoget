@@ -11,13 +11,15 @@ object fMain: TfMain
   Font.Name = 'MS Shell Dlg 2'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object barMain: TJvOutlookBar
     Left = 0
     Top = 0
     Width = 89
-    Height = 500
+    Height = 481
     Align = alLeft
     Pages = <
       item
@@ -72,5 +74,20 @@ object fMain: TfMain
         TopButtonIndex = 0
       end>
     TabOrder = 0
+  end
+  object StatusBar: TJvStatusBar
+    Left = 0
+    Top = 481
+    Width = 766
+    Height = 19
+    Panels = <>
+  end
+  object MainPage: TPageControl
+    Left = 89
+    Top = 0
+    Width = 677
+    Height = 481
+    Align = alClient
+    TabOrder = 1
   end
 end
