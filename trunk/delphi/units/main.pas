@@ -5,7 +5,7 @@ interface
 uses
   Windows, SysUtils, Classes, Controls, Forms, JvExControls, JvComponent,
   ComCtrls, JvExComCtrls, JvStatusBar, miscutils, mircmanager,
-  ImgList, JvLookOut;
+  ImgList, JvLookOut, Buttons;
 
 type
   TfMain = class(TForm)
@@ -21,6 +21,10 @@ type
     btFinished: TJvLookOutButton;
     btQueOptions: TJvLookOutButton;
     pageOptions: TJvLookOutPage;
+    btChannels: TJvLookOutButton;
+    btLists: TJvLookOutButton;
+    btQuickQueues: TSpeedButton;
+    btQuickLists: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
