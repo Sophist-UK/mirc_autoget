@@ -275,7 +275,7 @@ object fMain: TfMain
       ShowHint = True
     end
     object btQuickLists: TSpeedButton
-      Left = 24
+      Left = 23
       Top = 3
       Width = 18
       Height = 16
@@ -392,15 +392,172 @@ object fMain: TfMain
     Top = 0
     Width = 685
     Height = 480
+    ActivePage = sheetOptions
     Align = alClient
     TabOrder = 0
+    object sheetOptions: TTabSheet
+      Caption = 'sheetOptions'
+      TabVisible = False
+      OnShow = sheetOptionsShow
+      DesignSize = (
+        677
+        470)
+      object btRefreshChannels: TSpeedButton
+        Left = 232
+        Top = 8
+        Width = 137
+        Height = 22
+        Caption = 'Refresh channel list'
+        OnClick = btRefreshChannelsClick
+      end
+      object lblChannel: TLabel
+        Left = 376
+        Top = 8
+        Width = 7
+        Height = 25
+        Alignment = taCenter
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clGray
+        Font.Height = -21
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object trChannels: TTreeView
+        Left = 0
+        Top = 0
+        Width = 217
+        Height = 470
+        Align = alLeft
+        BevelInner = bvNone
+        BevelOuter = bvNone
+        BevelKind = bkSoft
+        Indent = 19
+        ReadOnly = True
+        SortType = stText
+        TabOrder = 0
+        OnChange = trChannelsChange
+      end
+      object grpChOptionsListGrabber: TGroupBox
+        Left = 232
+        Top = 40
+        Width = 433
+        Height = 169
+        Anchors = [akLeft, akTop, akRight]
+        Caption = 'List grabber'
+        TabOrder = 1
+        object Label1: TLabel
+          Left = 16
+          Top = 48
+          Width = 30
+          Height = 13
+          Caption = 'Mode:'
+        end
+        object SpeedButton1: TSpeedButton
+          Left = 256
+          Top = 16
+          Width = 169
+          Height = 22
+          Caption = 'View lists from this channel'
+        end
+        object chEnableListGrabberCH: TCheckBox
+          Left = 16
+          Top = 24
+          Width = 177
+          Height = 17
+          Caption = 'Enable list grabber on channel'
+          TabOrder = 0
+        end
+        object rdLGRelaxed: TRadioButton
+          Left = 56
+          Top = 48
+          Width = 153
+          Height = 17
+          Caption = 'Relaxed (one list at a time)'
+          Checked = True
+          TabOrder = 1
+          TabStop = True
+        end
+        object rdLGAggressive: TRadioButton
+          Left = 56
+          Top = 72
+          Width = 329
+          Height = 17
+          Caption = 'Aggressive (no delays between requests)'
+          TabOrder = 2
+        end
+        object rdLGTimeDelay: TRadioButton
+          Left = 56
+          Top = 96
+          Width = 225
+          Height = 17
+          Caption = 'Time-delay, wait between requets (min):'
+          TabOrder = 3
+        end
+        object edLGTimeDelay: TSpinEdit
+          Left = 288
+          Top = 92
+          Width = 33
+          Height = 22
+          Ctl3D = False
+          EditorEnabled = False
+          MaxValue = 60
+          MinValue = 1
+          ParentCtl3D = False
+          TabOrder = 4
+          Value = 3
+        end
+        object chAutoExpire: TCheckBox
+          Left = 16
+          Top = 120
+          Width = 169
+          Height = 17
+          Caption = 'Lists auto-expire after (days):'
+          TabOrder = 5
+        end
+        object edListExpire: TSpinEdit
+          Left = 200
+          Top = 116
+          Width = 33
+          Height = 22
+          Ctl3D = False
+          EditorEnabled = False
+          MaxValue = 90
+          MinValue = 3
+          ParentCtl3D = False
+          TabOrder = 6
+          Value = 3
+        end
+        object chAutoDelete: TCheckBox
+          Left = 16
+          Top = 144
+          Width = 161
+          Height = 17
+          Caption = 'Auto-delete lists after (days):'
+          TabOrder = 7
+        end
+        object edAutoDelete: TSpinEdit
+          Left = 200
+          Top = 140
+          Width = 33
+          Height = 22
+          Ctl3D = False
+          EditorEnabled = False
+          MaxValue = 90
+          MinValue = 3
+          ParentCtl3D = False
+          TabOrder = 8
+          Value = 3
+        end
+      end
+    end
   end
   object barMain: TJvLookOut
     Left = 0
     Top = 0
     Width = 81
     Height = 480
-    ActivePage = pageOptions
+    ActivePage = pageLists
     Align = alLeft
     AutoSize = True
     Color = clBtnFace
@@ -495,10 +652,24 @@ object fMain: TfMain
       HighlightFont.Style = []
       Caption = 'Lists'
       Color = clBtnShadow
+      object btLChannels: TJvLookOutButton
+        Left = 9
+        Top = 26
+        Caption = 'Channels'
+        GroupIndex = 4
+        HighlightFont.Charset = DEFAULT_CHARSET
+        HighlightFont.Color = clWindowText
+        HighlightFont.Height = -11
+        HighlightFont.Name = 'MS Shell Dlg 2'
+        HighlightFont.Style = []
+        ImageIndex = 4
+        LargeImages = imlButtons
+        OnClick = btChannelsClick
+      end
     end
     object pageTools: TJvLookOutPage
       Left = 0
-      Top = 40
+      Top = 439
       Width = 79
       Height = 420
       ImageSize = isSmall
@@ -512,7 +683,7 @@ object fMain: TfMain
     end
     object pageOptions: TJvLookOutPage
       Left = 0
-      Top = 60
+      Top = 459
       Width = 79
       Height = 420
       ImageSize = isSmall
@@ -535,6 +706,7 @@ object fMain: TfMain
         HighlightFont.Style = []
         ImageIndex = 4
         LargeImages = imlButtons
+        OnClick = btChannelsClick
       end
       object btLists: TJvLookOutButton
         Left = 9
@@ -554,10 +726,10 @@ object fMain: TfMain
   object imlButtons: TImageList
     Height = 32
     Width = 32
-    Left = 152
-    Top = 176
+    Left = 704
+    Top = 464
     Bitmap = {
-      494C010106000900040020002000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010106000900040020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2145,6 +2317,7 @@ object fMain: TfMain
       FFE003FFFFF00001800007FFF800001FFFF007FFFFF00003FE003FFFF800001F
       FFF80FFFFFF80003FFF8FFFFF800001FFFFC1FFFFFFC0007FFFFFFFFFC80003F
       FFFE3FFFFFFE000FFFFFFFFFFC00003FFFFFFFFFFFFF803FFFFFFFFFFE00BFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
   end
 end
