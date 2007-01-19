@@ -5,7 +5,7 @@ interface
 uses
   Windows, SysUtils, Classes, Controls, Forms, JvExControls, JvComponent,
   ComCtrls, JvExComCtrls, JvStatusBar, miscutils, mircmanager,
-  ImgList, JvLookOut, Buttons;
+  ImgList, JvLookOut, Buttons, StdCtrls, Spin;
 
 type
   TfMain = class(TForm)
@@ -25,8 +25,30 @@ type
     btLists: TJvLookOutButton;
     btQuickQueues: TSpeedButton;
     btQuickLists: TSpeedButton;
+    sheetOptions: TTabSheet;
+    trChannels: TTreeView;
+    grpChOptionsListGrabber: TGroupBox;
+    btRefreshChannels: TSpeedButton;
+    btLChannels: TJvLookOutButton;
+    chEnableListGrabberCH: TCheckBox;
+    rdLGRelaxed: TRadioButton;
+    Label1: TLabel;
+    rdLGAggressive: TRadioButton;
+    rdLGTimeDelay: TRadioButton;
+    edLGTimeDelay: TSpinEdit;
+    SpeedButton1: TSpeedButton;
+    chAutoExpire: TCheckBox;
+    edListExpire: TSpinEdit;
+    chAutoDelete: TCheckBox;
+    edAutoDelete: TSpinEdit;
+    lblChannel: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btChannelsClick(Sender: TObject);
+    procedure sheetOptionsShow(Sender: TObject);
+    procedure loadChannels;
+    procedure btRefreshChannelsClick(Sender: TObject);
+    procedure trChannelsChange(Sender: TObject; Node: TTreeNode);
   private
 
   public
@@ -63,6 +85,128 @@ begin
     mirc.WriteInteger('%AG8.UIHeight', self.Height);
     mirc.WriteInteger('%AG8.UIWidth', self.Width);
   end;
+end;
+
+procedure TfMain.btChannelsClick(Sender: TObject);
+begin
+  mainPage.ActivePage := sheetOptions;
+end;
+
+//load channels to the treeview
+
+procedure TfMain.loadChannels;
+var
+  slChannels: TStringList;
+  sNet, sNetOld, sChan: string;
+  i: integer;
+  tr, pr: TTreeNode;
+begin
+  trChannels.Items.Clear;
+
+  slChannels := TStringList.Create;
+  slChannels.CommaText := mirc.Evaluate('$AG8.GetChannels');
+  pr := trChannels.Items.GetFirstNode;
+  tr := pr;
+  for i := 0 to slChannels.count - 1 do
+  begin
+    miscutils.splitNetChannel(slChannels[i], sNet, sChan);
+    if (sNet <> sNetOld) then
+    begin
+      sNetOld := sNet;
+      tr := trChannels.Items.AddChild(pr, sNetOld);
+    end;
+
+    trChannels.Items.AddChild(tr, sChan);
+
+  end; //for
+  trChannels.FullExpand;
+  slChannels.Free;
+end; //proc
+
+//sheetOptions show
+//load channel tree onshow
+
+procedure TfMain.sheetOptionsShow(Sender: TObject);
+var
+  i: integer;
+
+begin
+  lblChannel.Caption := '';
+  //disable controls
+  for i := 0 to sheetOptions.ControlCount - 1 do
+  begin
+    sheetOptions.Controls[i].Enabled := false;
+    if sheetOptions.Controls[i] is TGroupBox then
+      miscutils.disableChildren(TGroupBox(sheetOptions.Controls[i]), false);
+  end; //for
+
+  loadChannels;
+
+  //enable controls?
+  trChannels.Enabled := true;
+  btRefreshChannels.Enabled := true;
+end;
+
+procedure TfMain.btRefreshChannelsClick(Sender: TObject);
+begin
+  sheetOptionsShow(Sender);
+end;
+
+//a treenode is selected
+procedure TfMain.trChannelsChange(Sender: TObject; Node: TTreeNode);
+var
+  i: integer;
+  sNG: string;
+begin
+  if trChannels.Items.Count < 2 then exit;
+  //if it is a network (has children), then select first child
+  if (trChannels.Selected.HasChildren) then
+  begin
+    trChannels.Select(trChannels.Selected.getFirstChild);
+    exit;
+  end;
+
+  //regular channel - load channel data
+  lblChannel.Caption := node.Parent.Text + ': ' + node.Text;
+
+  sNG := node.Parent.Text
+    + node.Text;
+
+  //keep disabled while loading
+//enabled
+  chEnableListGrabberCH.Checked := mirc.ReadBool('%AG8.LG.' + sNG + '.enabled', false);
+//mode
+   i := mirc.ReadInteger('%AG8.LG.' + sNG + '.mode', 0);
+
+  if i = 0 then rdLGRelaxed.Checked := true
+   else if i = 1 then rdLGAggressive.Checked := true
+   else rdLGTimeDelay.Checked := true;
+
+
+    //time-delay value (min)
+   edLGTimeDelay.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.mode', 3);
+
+   //auto-expire
+   chAutoExpire.Checked := mirc.ReadBool('bool %AG8.LG.' + sNG + '.AutoExpire', false);
+   //auto-expire time (days)
+   edListExpire.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.AutoExpire.delay', 15);
+
+   //Auto delete
+   chAutoDelete.Checked := mirc.ReadBool('bool %AG8.LG.' + sNG + '.AutoDelete', true);
+   //auto-delete delay (days)
+   edAutoDelete.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.AutoDelete.delay', 30);
+
+   //TODO: file grab settings!
+
+
+  //enable controls
+  for i := 0 to sheetOptions.ControlCount - 1 do
+  begin
+    sheetOptions.Controls[i].Enabled := true;
+    if sheetOptions.Controls[i] is TGroupBox then
+      miscutils.disableChildren(TGroupBox(sheetOptions.Controls[i]), true);
+  end; //for
+
 end;
 
 end.

@@ -90,7 +90,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=C:\autoget\bin
+OutputDir=C:\mIRC\Auto Get 8
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -141,7 +141,6 @@ c:\program files\borland\delphi7\Bin\dcldbx70.bpl=Borland dbExpress Components
 c:\program files\borland\delphi7\Bin\dcldbxcds70.bpl=Borland SimpleDataset Component (DBX)
 c:\program files\borland\delphi7\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 C:\Program Files\Borland\Delphi7\Bin\dclbde70.bpl=Borland BDE DB Components
-C:\Program Files\Borland\Delphi7\Bin\dbx70.bpl=Borland SQL Explorer UI Package
 c:\program files\borland\delphi7\Bin\dclwebsnap70.bpl=Borland WebSnap Components
 c:\program files\borland\delphi7\Bin\dclado70.bpl=Borland ADO DB Components
 c:\program files\borland\delphi7\Bin\dcltee70.bpl=TeeChart Components
@@ -160,5 +159,6 @@ c:\program files\borland\delphi7\Projects\Bpl\Mozilla.bpl=(untitled)
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlOutputDirectorry]
-Count=1
-Item0=C:\autoget\bin
+Count=2
+Item0=C:\mIRC\Auto Get 8
+Item1=C:\autoget\bin
