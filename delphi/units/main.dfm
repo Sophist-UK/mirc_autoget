@@ -467,6 +467,7 @@ object fMain: TfMain
           Height = 17
           Caption = 'Enable list grabber on channel'
           TabOrder = 0
+          OnClick = chEnableListGrabberCHClick
         end
         object rdLGRelaxed: TRadioButton
           Left = 56
@@ -477,6 +478,7 @@ object fMain: TfMain
           Checked = True
           TabOrder = 1
           TabStop = True
+          OnClick = rdLGModeClick
         end
         object rdLGAggressive: TRadioButton
           Left = 56
@@ -485,6 +487,7 @@ object fMain: TfMain
           Height = 17
           Caption = 'Aggressive (no delays between requests)'
           TabOrder = 2
+          OnClick = rdLGModeClick
         end
         object rdLGTimeDelay: TRadioButton
           Left = 56
@@ -493,6 +496,7 @@ object fMain: TfMain
           Height = 17
           Caption = 'Time-delay, wait between requets (min):'
           TabOrder = 3
+          OnClick = rdLGModeClick
         end
         object edLGTimeDelay: TSpinEdit
           Left = 288
@@ -506,6 +510,7 @@ object fMain: TfMain
           ParentCtl3D = False
           TabOrder = 4
           Value = 3
+          OnChange = edLGTimeDelayChange
         end
         object chAutoExpire: TCheckBox
           Left = 16
@@ -514,6 +519,7 @@ object fMain: TfMain
           Height = 17
           Caption = 'Lists auto-expire after (days):'
           TabOrder = 5
+          OnClick = chAutoExpireClick
         end
         object edListExpire: TSpinEdit
           Left = 200
@@ -527,6 +533,7 @@ object fMain: TfMain
           ParentCtl3D = False
           TabOrder = 6
           Value = 3
+          OnChange = edListExpireChange
         end
         object chAutoDelete: TCheckBox
           Left = 16
@@ -535,6 +542,7 @@ object fMain: TfMain
           Height = 17
           Caption = 'Auto-delete lists after (days):'
           TabOrder = 7
+          OnClick = chAutoDeleteClick
         end
         object edAutoDelete: TSpinEdit
           Left = 200
@@ -548,6 +556,7 @@ object fMain: TfMain
           ParentCtl3D = False
           TabOrder = 8
           Value = 3
+          OnChange = edAutoDeleteChange
         end
       end
     end
