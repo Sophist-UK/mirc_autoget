@@ -256,7 +256,7 @@ end;
 
 procedure TfMain.chAutoExpireClick(Sender: TObject);
 begin
-  mirc.WriteBool('bool %AG8.LG.' + getnetchan + '.AutoExpire',
+  mirc.WriteBool('%AG8.LG.' + getnetchan + '.AutoExpire',
     chAutoExpire.Checked);
 
 end;
