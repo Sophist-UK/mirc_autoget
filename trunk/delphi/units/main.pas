@@ -49,6 +49,14 @@ type
     procedure loadChannels;
     procedure btRefreshChannelsClick(Sender: TObject);
     procedure trChannelsChange(Sender: TObject; Node: TTreeNode);
+    procedure chEnableListGrabberCHClick(Sender: TObject);
+    function getNetChan: string;
+    procedure rdLGModeClick(Sender: TObject);
+    procedure edLGTimeDelayChange(Sender: TObject);
+    procedure chAutoExpireClick(Sender: TObject);
+    procedure edListExpireChange(Sender: TObject);
+    procedure chAutoDeleteClick(Sender: TObject);
+    procedure edAutoDeleteChange(Sender: TObject);
   private
 
   public
@@ -153,12 +161,14 @@ begin
 end;
 
 //a treenode is selected
+
 procedure TfMain.trChannelsChange(Sender: TObject; Node: TTreeNode);
 var
   i: integer;
   sNG: string;
 begin
-  if trChannels.Items.Count < 2 then exit;
+  if trChannels.Items.Count < 2 then
+    exit;
   //if it is a network (has children), then select first child
   if (trChannels.Selected.HasChildren) then
   begin
@@ -174,32 +184,38 @@ begin
 
   //keep disabled while loading
 //enabled
-  chEnableListGrabberCH.Checked := mirc.ReadBool('%AG8.LG.' + sNG + '.enabled', false);
-//mode
-   i := mirc.ReadInteger('%AG8.LG.' + sNG + '.mode', 0);
+  chEnableListGrabberCH.Checked := mirc.ReadBool('%AG8.LG.' + sNG + '.enabled',
+    false);
+  //mode
+  i := mirc.ReadInteger('%AG8.LG.' + sNG + '.mode', 0);
 
-  if i = 0 then rdLGRelaxed.Checked := true
-   else if i = 1 then rdLGAggressive.Checked := true
-   else rdLGTimeDelay.Checked := true;
+  if i = 0 then
+    rdLGRelaxed.Checked := true
+  else if i = 1 then
+    rdLGAggressive.Checked := true
+  else
+    rdLGTimeDelay.Checked := true;
 
+  //time-delay value (min)
+  edLGTimeDelay.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.mode', 3);
 
-    //time-delay value (min)
-   edLGTimeDelay.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.mode', 3);
+  //auto-expire
+  chAutoExpire.Checked := mirc.ReadBool('%AG8.LG.' + sNG + '.AutoExpire',
+    false);
+  //auto-expire time (days)
+  edListExpire.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.AutoExpire.delay',
+    15);
 
-   //auto-expire
-   chAutoExpire.Checked := mirc.ReadBool('bool %AG8.LG.' + sNG + '.AutoExpire', false);
-   //auto-expire time (days)
-   edListExpire.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.AutoExpire.delay', 15);
+  //Auto delete
+  chAutoDelete.Checked := mirc.ReadBool('%AG8.LG.' + sNG + '.AutoDelete',
+    true);
+  //auto-delete delay (days)
+  edAutoDelete.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.AutoDelete.delay',
+    30);
 
-   //Auto delete
-   chAutoDelete.Checked := mirc.ReadBool('bool %AG8.LG.' + sNG + '.AutoDelete', true);
-   //auto-delete delay (days)
-   edAutoDelete.Value := mirc.ReadInteger('%AG8.LG.' + sNG + '.AutoDelete.delay', 30);
+  //TODO: file grab settings!
 
-   //TODO: file grab settings!
-
-
-  //enable controls
+ //enable controls
   for i := 0 to sheetOptions.ControlCount - 1 do
   begin
     sheetOptions.Controls[i].Enabled := true;
@@ -207,6 +223,63 @@ begin
       miscutils.disableChildren(TGroupBox(sheetOptions.Controls[i]), true);
   end; //for
 
+end;
+
+//gets net#chan
+
+function TfMain.getNetChan: string;
+begin
+  result := trchannels.Selected.Parent.Text
+    + trchannels.Selected.Text;
+end;
+
+procedure TfMain.chEnableListGrabberCHClick(Sender: TObject);
+begin
+  mirc.WriteBool('%AG8.LG.' + getnetchan + '.enabled',
+    chEnableListGrabberCH.Checked);
+end;
+
+procedure TfMain.rdLGModeClick(Sender: TObject);
+begin
+  if rdLGRelaxed.Checked then
+    mirc.WriteInteger('%AG8.LG.' + getnetchan + '.mode', 0);
+  if rdLGAggressive.Checked then
+    mirc.WriteInteger('%AG8.LG.' + getnetchan + '.mode', 1);
+  if rdLGTimeDelay.Checked then
+    mirc.WriteInteger('%AG8.LG.' + getnetchan + '.mode', 2);
+end;
+
+procedure TfMain.edLGTimeDelayChange(Sender: TObject);
+begin
+  mirc.ReadInteger('%AG8.LG.' + getnetchan + '.mode', edLGTimeDelay.Value);
+end;
+
+procedure TfMain.chAutoExpireClick(Sender: TObject);
+begin
+  mirc.WriteBool('bool %AG8.LG.' + getnetchan + '.AutoExpire',
+    chAutoExpire.Checked);
+
+end;
+
+procedure TfMain.edListExpireChange(Sender: TObject);
+begin
+  //auto-expire time (days)
+  mirc.WriteInteger('%AG8.LG.' + getnetchan + '.AutoExpire.delay',
+    edListExpire.Value);
+end;
+
+procedure TfMain.chAutoDeleteClick(Sender: TObject);
+begin
+  //Auto delete
+  mirc.WriteBool('%AG8.LG.' + getnetchan + '.AutoDelete',
+    chAutoDelete.Checked);
+end;
+
+procedure TfMain.edAutoDeleteChange(Sender: TObject);
+begin
+  //auto-delete delay (days)
+  mirc.WriteInteger('%AG8.LG.' + getnetchan + '.AutoDelete.delay',
+    edAutoDelete.Value);
 end;
 
 end.
